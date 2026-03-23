@@ -20,23 +20,25 @@ NAME_RULES: list[tuple[list[str], str]] = [
     # ( [keywords], destination_folder )
     (["2-way", "MX5", "Hyundai", "4-way"],        "Hyundai MX5"),
     (["Gravity", "Lucid Gravity", "Transys"],      "Lucid Gravity"),
-    (["Earth", "Touring", ""],         "Lucid Earth"),
+    (["Earth", "Touring", "Lucid Lumbar"],         "Lucid Earth"),
+    (["Lucid"],                                   "Lucid Programs"),
     (["DT", "WS", "Shift", "Adient"],           "Stellantis WS_WL_DT"),
     (["tax", "w2", "1099"],                 "Test Requests"),
     (["meeting", "agenda", "minutes"],      "Test Reports"),
     (["GM", "T1", "Energy Tables"],      "General Motors"),
     (["TCS", "TC", "analysis"],     "TCS Documents"),
+    (["NX5"],     "NX5 Program"),
 ]
 
 # ── LOGIC ───────────────────────────────────────────────────────────────────
 
 def match_name(filename_stem: str) -> str | None:
-    """Return a destination folder name if a keyword matches, else None."""
     lower = filename_stem.lower()
-    for keywords, folder in NAME_RULES:
-        if any(kw in lower for kw in keywords):
+    for keywords, folder in NAME_RULES:                          # ← for loop
+        if any(kw.lower() in lower for kw in keywords if kw):   # ← indented inside it
             return folder
     return None
+
 
 
 def gather_moves(desktop: Path) -> list[tuple[Path, Path]]:
